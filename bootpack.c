@@ -1,15 +1,15 @@
-/* ‘¼‚Ìƒtƒ@ƒCƒ‹‚Åì‚Á‚½ŠÖ”‚ª‚ ‚è‚Ü‚·‚ÆCƒRƒ“ƒpƒCƒ‰‚É‹³‚¦‚é */
+/* ï¿½ï¿½ï¿½Ìƒtï¿½@ï¿½Cï¿½ï¿½ï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½Öï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Cï¿½Rï¿½ï¿½ï¿½pï¿½Cï¿½ï¿½ï¿½É‹ï¿½ï¿½ï¿½ï¿½ï¿½ */
 
 void io_hlt(void);
 
-/* ŠÖ”éŒ¾‚È‚Ì‚ÉA{}‚ª‚È‚­‚Ä‚¢‚«‚È‚è;‚ð‘‚­‚ÆA
-	‘¼‚Ìƒtƒ@ƒCƒ‹‚É‚ ‚é‚©‚ç‚æ‚ë‚µ‚­‚ËA‚Æ‚¢‚¤ˆÓ–¡‚É‚È‚é‚Ì‚Å‚·B */
+/* ï¿½Öï¿½ï¿½éŒ¾ï¿½È‚Ì‚ÉA{}ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½;ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÆA
+	ï¿½ï¿½ï¿½Ìƒtï¿½@ï¿½Cï¿½ï¿½ï¿½É‚ï¿½ï¿½é‚©ï¿½ï¿½ï¿½ë‚µï¿½ï¿½ï¿½ËAï¿½Æ‚ï¿½ï¿½ï¿½ï¿½Ó–ï¿½ï¿½É‚È‚ï¿½Ì‚Å‚ï¿½ï¿½B */
 
 void HariMain(void)
 {
 
 fin:
-	io_hlt(); /* ‚±‚ê‚Ånaskfunc.nas‚Ì_io_hlt‚ªŽÀs‚³‚ê‚Ü‚· */
+	io_hlt(); /* ï¿½ï¿½ï¿½ï¿½ï¿½naskfunc.nasï¿½ï¿½_io_hltï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ */
 	goto fin;
 
 }
