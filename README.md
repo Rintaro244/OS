@@ -2,7 +2,7 @@
  
 "chapter3"の最後に用いたファイルを一部変更してみた
  
-# outline
+# Outline
  
 ・C言語ファイルのbootpack.cを様々な.exeファイルを用いて、機械語のファイルにする。C言語ではHLTが使えないので、別のファイルで代用されている。
  
@@ -16,5 +16,6 @@
 
  
 # Result
+[実行結果](./screenshot_chap3.png)
  
  
