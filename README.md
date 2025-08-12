@@ -2,20 +2,20 @@
  
 "chapter3"の最後に用いたファイルを一部変更してみた
  
-# Outline
+## Outline
  
 ・C言語ファイルのbootpack.cを様々な.exeファイルを用いて、機械語のファイルにする。C言語ではHLTが使えないので、別のファイルで代用されている。
  
-# Features
+## Features
  
 ・asmhead.nasの画面モード設定の内容を変更してみた。MOV  AL,0x13をMOV  AL,0x12に変え、それに伴いピクセル数なども調整した。結果は元の場合と一致したが、bootpack.cは何も変えていないのでこのままでは正しい実行結果にはならないと考えられる。
 
  
-# SetUp
+## SetUp
 ・Makefileを見ると、コマンドmake fileだけで全てセットアップ可能だとわかる。
 
  
-# Result
+## Result
 [実行結果](./screenshot_chap3.png)
  
  
