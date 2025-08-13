@@ -27,5 +27,5 @@
 ・make runだけでセットアップ可能である。
 
 ## Result
-[実行結果](./screenshot2.png)
+[実行結果](./screenshot_chap4.png)
  
