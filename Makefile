@@ -13,12 +13,12 @@ IMGTOL   = $(TOOLPATH)imgtol.com
 COPY     = copy
 DEL      = del
 
-# ï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½
+# ƒfƒtƒHƒ‹ƒg“®ì
 
 default :
 	$(MAKE) img
 
-# ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Kï¿½ï¿½
+# ƒtƒ@ƒCƒ‹¶¬‹K‘¥
 
 ipl10.bin : ipl10.nas Makefile
 	$(NASK) ipl10.nas ipl10.bin ipl10.lst
@@ -55,7 +55,7 @@ haribote.img : ipl10.bin haribote.sys Makefile
 		copy from:haribote.sys to:@: \
 		imgout:haribote.img
 
-# ï¿½Rï¿½}ï¿½ï¿½ï¿½h
+# ƒRƒ}ƒ“ƒh
 
 img :
 	$(MAKE) haribote.img

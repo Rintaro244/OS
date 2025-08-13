@@ -1,21 +1,77 @@
 ; naskfunc
 ; TAB=4
 
-[FORMAT "WCOFF"]				; ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½éƒ‚ï¿½[ï¿½h	
-[BITS 32]						; 32ï¿½rï¿½bï¿½gï¿½ï¿½ï¿½[ï¿½hï¿½pï¿½Ì‹@ï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½ç‚¹ï¿½ï¿½
+[FORMAT "WCOFF"]				; ƒIƒuƒWƒFƒNƒgƒtƒ@ƒCƒ‹‚ğì‚éƒ‚[ƒh	
+[INSTRSET "i486p"]				; 486‚Ì–½—ß‚Ü‚Åg‚¢‚½‚¢‚Æ‚¢‚¤‹Lq
+[BITS 32]						; 32ƒrƒbƒgƒ‚[ƒh—p‚Ì‹@ŠBŒê‚ğì‚ç‚¹‚é
+[FILE "naskfunc.nas"]			; ƒ\[ƒXƒtƒ@ƒCƒ‹–¼î•ñ
 
+		GLOBAL	_io_hlt, _io_cli, _io_sti, _io_stihlt
+		GLOBAL	_io_in8,  _io_in16,  _io_in32
+		GLOBAL	_io_out8, _io_out16, _io_out32
+		GLOBAL	_io_load_eflags, _io_store_eflags
 
-; ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ß‚Ìï¿½ï¿½
-
-[FILE "naskfunc.nas"]			; ï¿½\ï¿½[ï¿½Xï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-
-		GLOBAL	_io_hlt			; ï¿½ï¿½ï¿½Ìƒvï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ÉŠÜ‚Ü‚ï¿½ï¿½Öï¿½ï¿½ï¿½
-
-
-; ï¿½È‰ï¿½ï¿½Íï¿½ï¿½Û‚ÌŠÖï¿½
-
-[SECTION .text]		; ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Å‚Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+[SECTION .text]
 
 _io_hlt:	; void io_hlt(void);
 		HLT
+		RET
+
+_io_cli:	; void io_cli(void);
+		CLI
+		RET
+
+_io_sti:	; void io_sti(void);
+		STI
+		RET
+
+_io_stihlt:	; void io_stihlt(void);
+		STI
+		HLT
+		RET
+
+_io_in8:	; int io_in8(int port);
+		MOV		EDX,[ESP+4]		; port
+		MOV		EAX,0
+		IN		AL,DX
+		RET
+
+_io_in16:	; int io_in16(int port);
+		MOV		EDX,[ESP+4]		; port
+		MOV		EAX,0
+		IN		AX,DX
+		RET
+
+_io_in32:	; int io_in32(int port);
+		MOV		EDX,[ESP+4]		; port
+		IN		EAX,DX
+		RET
+
+_io_out8:	; void io_out8(int port, int data);
+		MOV		EDX,[ESP+4]		; port
+		MOV		AL,[ESP+8]		; data
+		OUT		DX,AL
+		RET
+
+_io_out16:	; void io_out16(int port, int data);
+		MOV		EDX,[ESP+4]		; port
+		MOV		EAX,[ESP+8]		; data
+		OUT		DX,AX
+		RET
+
+_io_out32:	; void io_out32(int port, int data);
+		MOV		EDX,[ESP+4]		; port
+		MOV		EAX,[ESP+8]		; data
+		OUT		DX,EAX
+		RET
+
+_io_load_eflags:	; int io_load_eflags(void);
+		PUSHFD		; PUSH EFLAGS ‚Æ‚¢‚¤ˆÓ–¡
+		POP		EAX
+		RET
+
+_io_store_eflags:	; void io_store_eflags(int eflags);
+		MOV		EAX,[ESP+4]
+		PUSH	EAX
+		POPFD		; POP EFLAGS ‚Æ‚¢‚¤ˆÓ–¡
 		RET
