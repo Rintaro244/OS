@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 
 void io_hlt(void);
 void io_cli(void);
@@ -66,7 +66,7 @@ void HariMain(void)
 	init_gdtidt();
 	init_palette();
 	init_screen8(binfo->vram, binfo->scrnx, binfo->scrny);
-	mx = (binfo->scrnx - 16) / 2; /* ��ʒ����ɂȂ�悤�ɍ��W�v�Z */
+	mx = (binfo->scrnx - 16) / 2; /* 画面中央になるように座標を計算 */
 	my = (binfo->scrny - 28 - 16) / 2;
 	init_mouse_cursor8(mcursor, COL8_008484);
 	putblock8_8(binfo->vram, binfo->scrnx, 16, 16, mx, my, mcursor, 16);
@@ -74,7 +74,7 @@ void HariMain(void)
 	sprintf(s, "(%d, %d)", mx, my);
 	putfonts8_asc(binfo->vram, binfo->scrnx, 0, 0, COL8_FFFFFF, s);
 
-	//Rintaro��ǉ�
+	// Rintaroを追加
 	char p[40];
 	sprintf(p,"Rintaro");
 	putfonts8_asc(binfo->vram, binfo->scrnx, 80, 0, COL8_FFFFFF, p);
@@ -87,34 +87,35 @@ void HariMain(void)
 void init_palette(void)
 {
 	static unsigned char table_rgb[16 * 3] = {
-		0x00, 0x00, 0x00,	/*  0:�� */
-		0xff, 0x00, 0x00,	/*  1:���邢�� */
-		0x00, 0xff, 0x00,	/*  2:���邢�� */
-		0xff, 0xff, 0x00,	/*  3:���邢���F */
-		0x00, 0x00, 0xff,	/*  4:���邢�� */
-		0xff, 0x00, 0xff,	/*  5:���邢�� */
-		0x00, 0xff, 0xff,	/*  6:���邢���F */
-		0xff, 0xff, 0xff,	/*  7:�� */
-		0xc6, 0xc6, 0xc6,	/*  8:���邢�D�F */
-		0x84, 0x00, 0x00,	/*  9:�Â��� */
-		0x00, 0x84, 0x00,	/* 10:�Â��� */
-		0x84, 0x84, 0x00,	/* 11:�Â����F */
-		0x00, 0x00, 0x84,	/* 12:�Â��� */
-		0x84, 0x00, 0x84,	/* 13:�Â��� */
-		0x00, 0x84, 0x84,	/* 14:�Â����F */
-		0x84, 0x84, 0x84	/* 15:�Â��D�F */
+	0x00, 0x00, 0x00,	/*  0: 黒 (Black) */
+	0xff, 0x00, 0x00,	/*  1: 赤 (Red) */
+	0x00, 0xff, 0x00,	/*  2: 緑 (Green) */
+	0xff, 0xff, 0x00,	/*  3: 黄 (Yellow) */
+	0x00, 0x00, 0xff,	/*  4: 青 (Blue) */
+	0xff, 0x00, 0xff,	/*  5: マゼンタ (Magenta) */
+	0x00, 0xff, 0xff,	/*  6: シアン (Cyan) */
+	0xff, 0xff, 0xff,	/*  7: 白 (White) */
+	0xc6, 0xc6, 0xc6,	/*  8: 明るい灰色 (Bright Gray) */
+	0x84, 0x00, 0x00,	/*  9: 暗い赤 (Dark Red) */
+	0x00, 0x84, 0x00,	/* 10: 暗い緑 (Dark Green) */
+	0x84, 0x84, 0x00,	/* 11: 暗い黄 (Olive) */
+	0x00, 0x00, 0x84,	/* 12: 暗い青 (Dark Blue) */
+	0x84, 0x00, 0x84,	/* 13: 暗いマゼンタ (Dark Magenta) */
+	0x00, 0x84, 0x84,	/* 14: 暗いシアン (Dark Cyan) */
+	0x84, 0x84, 0x84	/* 15: 暗い灰色 (Dark Gray) */
+
 	};
 	set_palette(0, 15, table_rgb);
 	return;
 
-	/* static char ���߂́A�f�[�^�ɂ����g���Ȃ�����DB���ߑ��� */
+	/* 予備（ここには特に処理はない） */
 }
 
 void set_palette(int start, int end, unsigned char *rgb)
 {
 	int i, eflags;
-	eflags = io_load_eflags();	/* ���荞�݋��t���O�̒l���L�^���� */
-	io_cli(); 					/* ���t���O��0�ɂ��Ċ��荞�݋֎~�ɂ��� */
+	eflags = io_load_eflags();	/* 割り込みフラグの値を保存 */
+	io_cli(); 					/* 割り込みを禁止する */
 	io_out8(0x03c8, start);
 	for (i = start; i <= end; i++) {
 		io_out8(0x03c9, rgb[0] / 4);
@@ -122,7 +123,7 @@ void set_palette(int start, int end, unsigned char *rgb)
 		io_out8(0x03c9, rgb[2] / 4);
 		rgb += 3;
 	}
-	io_store_eflags(eflags);	/* ���荞�݋��t���O�����ɖ߂� */
+	io_store_eflags(eflags);	/* 割り込みフラグを元に戻す */
 	return;
 }
 
@@ -187,7 +188,7 @@ void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s
 }
 
 void init_mouse_cursor8(char *mouse, char bc)
-/* �}�E�X�J�[�\���������i16x16�j */
+/* マウスカーソルの初期化（16x16） */
 {
 	static char cursor[16][16] = {
 		"**************..",
@@ -243,7 +244,7 @@ void init_gdtidt(void)
 	struct GATE_DESCRIPTOR    *idt = (struct GATE_DESCRIPTOR    *) 0x0026f800;
 	int i;
 
-	/* GDT�̏����� */
+	/* GDT の初期化 */
 	for (i = 0; i < 8192; i++) {
 		set_segmdesc(gdt + i, 0, 0, 0);
 	}
@@ -251,7 +252,7 @@ void init_gdtidt(void)
 	set_segmdesc(gdt + 2, 0x0007ffff, 0x00280000, 0x409a);
 	load_gdtr(0xffff, 0x00270000);
 
-	/* IDT�̏����� */
+	/* IDT の初期化 */
 	for (i = 0; i < 256; i++) {
 		set_gatedesc(idt + i, 0, 0, 0);
 	}
