@@ -15,12 +15,12 @@ IMGTOL   = $(TOOLPATH)imgtol.com
 COPY     = copy
 DEL      = del
 
-# �f�t�H���g����
+# デフォルトターゲット
 
 default :
 	$(MAKE) img
 
-# �t�@�C�������K��
+# ファイル生成規則
 
 ipl10.bin : ipl10.nas Makefile
 	$(NASK) ipl10.nas ipl10.bin ipl10.lst
@@ -63,7 +63,7 @@ haribote.img : ipl10.bin haribote.sys Makefile
 		copy from:haribote.sys to:@: \
 		imgout:haribote.img
 
-# �R�}���h
+# コマンド
 
 img :
 	$(MAKE) haribote.img
