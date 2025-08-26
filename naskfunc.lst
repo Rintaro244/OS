@@ -1,10 +1,10 @@
-     1 00000000                                 ; naskfunc
+ï»¿     1 00000000                                 ; naskfunc
      2 00000000                                 ; TAB=4
      3 00000000                                 
-     4 00000000                                 [FORMAT "WCOFF"]				; ƒIƒuƒWƒFƒNƒgƒtƒ@ƒCƒ‹‚ðì‚éƒ‚[ƒh	
-     5 00000000                                 [INSTRSET "i486p"]				; 486‚Ì–½—ß‚Ü‚ÅŽg‚¢‚½‚¢‚Æ‚¢‚¤‹Lq
-     6 00000000                                 [BITS 32]						; 32ƒrƒbƒgƒ‚[ƒh—p‚Ì‹@ŠBŒê‚ðì‚ç‚¹‚é
-     7 00000000                                 [FILE "naskfunc.nas"]			; ƒ\[ƒXƒtƒ@ƒCƒ‹–¼î•ñ
+     4 00000000                                 [FORMAT "WCOFF"]				; ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½éƒ‚ï¿½[ï¿½h	
+     5 00000000                                 [INSTRSET "i486p"]				; 486ï¿½Ì–ï¿½ï¿½ß‚Ü‚ÅŽgï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½Lï¿½q
+     6 00000000                                 [BITS 32]						; 32ï¿½rï¿½bï¿½gï¿½ï¿½ï¿½[ï¿½hï¿½pï¿½Ì‹@ï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½ç‚¹ï¿½ï¿½
+     7 00000000                                 [FILE "naskfunc.nas"]			; ï¿½\ï¿½[ï¿½Xï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      8 00000000                                 
      9 00000000                                 		GLOBAL	_io_hlt, _io_cli, _io_sti, _io_stihlt
     10 00000000                                 		GLOBAL	_io_in8,  _io_in16,  _io_in32
@@ -67,14 +67,14 @@
     67 00000044 C3                              		RET
     68 00000045                                 
     69 00000045                                 _io_load_eflags:	; int io_load_eflags(void);
-    70 00000045 9C                              		PUSHFD		; PUSH EFLAGS ‚Æ‚¢‚¤ˆÓ–¡
+    70 00000045 9C                              		PUSHFD		; PUSH EFLAGS ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½Ó–ï¿½
     71 00000046 58                              		POP		EAX
     72 00000047 C3                              		RET
     73 00000048                                 
     74 00000048                                 _io_store_eflags:	; void io_store_eflags(int eflags);
     75 00000048 8B 44 24 04                     		MOV		EAX,[ESP+4]
     76 0000004C 50                              		PUSH	EAX
-    77 0000004D 9D                              		POPFD		; POP EFLAGS ‚Æ‚¢‚¤ˆÓ–¡
+    77 0000004D 9D                              		POPFD		; POP EFLAGS ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½Ó–ï¿½
     78 0000004E C3                              		RET
     79 0000004F                                 
     80 0000004F                                 _load_gdtr:		; void load_gdtr(int limit, int addr);
