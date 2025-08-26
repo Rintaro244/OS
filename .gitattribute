@@ -4,3 +4,5 @@
 *.nas working-tree-encoding=cp932
 *.c working-tree-encoding=cp932
 Makefile working-tree-encoding=cp932
+
+*.html working-tree-encoding=cp932
