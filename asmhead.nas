@@ -106,13 +106,13 @@ pipelineflush:
 		MOV		ECX,[EBX+16]
 		ADD		ECX,3			; ECX += 3;
 		SHR		ECX,2			; ECX /= 4;
-		JZ		skip			;]ׂ̂Ȃ
-		MOV		ESI,[EBX+20]	;]
+		JZ		skip			; 展開不要なら skip へ
+		MOV		ESI,[EBX+20]	; コピー元
 		ADD		ESI,EBX
-		MOV		EDI,[EBX+12]	;]
+		MOV		EDI,[EBX+12]	; コピー先
 		CALL	memcpy
 skip:
-		MOV		ESP,[EBX+12]	;X^bNl
+		MOV		ESP,[EBX+12]	; スタック初期値
 		JMP		DWORD 2*8:0x0000001b
 
 waitkbdout:
