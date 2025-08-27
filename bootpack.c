@@ -45,9 +45,9 @@ void HariMain(void)
 	init_screen8(buf_back, binfo->scrnx, binfo->scrny);
 	init_mouse_cursor8(buf_mouse, 99);
 
+
 	char long_title[] = "counterrrrrrrrrrrrrrrrrrrrrrr";
-    char short_title[14]; // 10���� + ... + \0 = 14
-    // �^�C�g����������ȗ����ăR�s�[
+    char short_title[14]; 
     if (strlen(long_title) > 10) {
         strncpy(short_title, long_title, 10);
         short_title[10] = '\0'; 
@@ -55,8 +55,8 @@ void HariMain(void)
     } else {
         strcpy(short_title, long_title);
     }
-    // �ȗ����ꂽ�^�C�g�����g���ăE�B���h�E���쐬
     make_window8(buf_win, 160, 52, short_title);
+
 
 	sheet_slide(sht_back, 0, 0);
 	mx = (binfo->scrnx - 16) / 2; /* ��ʒ����ɂȂ�悤�ɍ��W�v�Z */

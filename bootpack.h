@@ -1,10 +1,10 @@
 /* asmhead.nas */
 struct BOOTINFO { /* 0x0ff0-0x0fff */
-	char cyls; /* ï¿½uï¿½[ï¿½gï¿½Zï¿½Nï¿½^ï¿½Í‚Ç‚ï¿½ï¿½Ü‚Åƒfï¿½Bï¿½Xï¿½Nï¿½ï¿½Ç‚ñ‚¾‚Ì‚ï¿½ */
-	char leds; /* ï¿½uï¿½[ï¿½gï¿½ï¿½ï¿½ÌƒLï¿½[ï¿½{ï¿½[ï¿½hï¿½ï¿½LEDï¿½Ìï¿½ï¿½ */
-	char vmode; /* ï¿½rï¿½fï¿½Iï¿½ï¿½ï¿½[ï¿½h  ï¿½ï¿½ï¿½rï¿½bï¿½gï¿½Jï¿½ï¿½ï¿½[ï¿½ï¿½ */
+	char cyls; /* ƒu[ƒgƒZƒNƒ^‚Í‚Ç‚±‚Ü‚ÅƒfƒBƒXƒN‚ğ“Ç‚ñ‚¾‚Ì‚© */
+	char leds; /* ƒu[ƒg‚ÌƒL[ƒ{[ƒh‚ÌLED‚Ìó‘Ô */
+	char vmode; /* ƒrƒfƒIƒ‚[ƒh  ‰½ƒrƒbƒgƒJƒ‰[‚© */
 	char reserve;
-	short scrnx, scrny; /* ï¿½ï¿½Ê‰ğ‘œ“x */
+	short scrnx, scrny; /* ‰æ–Ê‰ğ‘œ“x */
 	char *vram;
 };
 #define ADR_BOOTINFO	0x00000ff0
@@ -123,12 +123,12 @@ int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 extern struct FIFO8 mousefifo;
 
 /* memory.c */
-#define MEMMAN_FREES		4090	/* ï¿½ï¿½ï¿½ï¿½Å–ï¿½32KB */
+#define MEMMAN_FREES		4090	/* ‚±‚ê‚Å–ñ32KB */
 #define MEMMAN_ADDR			0x003c0000
-struct FREEINFO {	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+struct FREEINFO {	/* ‚ ‚«î•ñ */
 	unsigned int addr, size;
 };
-struct MEMMAN {		/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç—ï¿½ */
+struct MEMMAN {		/* ƒƒ‚ƒŠŠÇ— */
 	int frees, maxfrees, lostsize, losts;
 	struct FREEINFO free[MEMMAN_FREES];
 };
