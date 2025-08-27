@@ -1,64 +1,38 @@
-/* Š„‚èž‚ÝŠÖŒW */
+/* ï¿½ï¿½ï¿½èžï¿½ÝŠÖŒW */
 
 #include "bootpack.h"
 #include <stdio.h>
 
 void init_pic(void)
-/* PIC‚Ì‰Šú‰» */
+/* PICï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ */
 {
-	io_out8(PIC0_IMR,  0xff  ); /* ‘S‚Ä‚ÌŠ„‚èž‚Ý‚ðŽó‚¯•t‚¯‚È‚¢ */
-	io_out8(PIC1_IMR,  0xff  ); /* ‘S‚Ä‚ÌŠ„‚èž‚Ý‚ðŽó‚¯•t‚¯‚È‚¢ */
+	io_out8(PIC0_IMR,  0xff  ); /* ï¿½Sï¿½Ä‚ÌŠï¿½ï¿½èžï¿½Ý‚ï¿½ï¿½ó‚¯•tï¿½ï¿½ï¿½È‚ï¿½ */
+	io_out8(PIC1_IMR,  0xff  ); /* ï¿½Sï¿½Ä‚ÌŠï¿½ï¿½èžï¿½Ý‚ï¿½ï¿½ó‚¯•tï¿½ï¿½ï¿½È‚ï¿½ */
 
-	io_out8(PIC0_ICW1, 0x11  ); /* ƒGƒbƒWƒgƒŠƒKƒ‚[ƒh */
-	io_out8(PIC0_ICW2, 0x20  ); /* IRQ0-7‚ÍAINT20-27‚ÅŽó‚¯‚é */
-	io_out8(PIC0_ICW3, 1 << 2); /* PIC1‚ÍIRQ2‚É‚ÄÚ‘± */
-	io_out8(PIC0_ICW4, 0x01  ); /* ƒmƒ“ƒoƒbƒtƒ@ƒ‚[ƒh */
+	io_out8(PIC0_ICW1, 0x11  ); /* ï¿½Gï¿½bï¿½Wï¿½gï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½[ï¿½h */
+	io_out8(PIC0_ICW2, 0x20  ); /* IRQ0-7ï¿½ÍAINT20-27ï¿½ÅŽó‚¯‚ï¿½ */
+	io_out8(PIC0_ICW3, 1 << 2); /* PIC1ï¿½ï¿½IRQ2ï¿½É‚ÄÚ‘ï¿½ */
+	io_out8(PIC0_ICW4, 0x01  ); /* ï¿½mï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½ï¿½ï¿½[ï¿½h */
 
-	io_out8(PIC1_ICW1, 0x11  ); /* ƒGƒbƒWƒgƒŠƒKƒ‚[ƒh */
-	io_out8(PIC1_ICW2, 0x28  ); /* IRQ8-15‚ÍAINT28-2f‚ÅŽó‚¯‚é */
-	io_out8(PIC1_ICW3, 2     ); /* PIC1‚ÍIRQ2‚É‚ÄÚ‘± */
-	io_out8(PIC1_ICW4, 0x01  ); /* ƒmƒ“ƒoƒbƒtƒ@ƒ‚[ƒh */
+	io_out8(PIC1_ICW1, 0x11  ); /* ï¿½Gï¿½bï¿½Wï¿½gï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½[ï¿½h */
+	io_out8(PIC1_ICW2, 0x28  ); /* IRQ8-15ï¿½ÍAINT28-2fï¿½ÅŽó‚¯‚ï¿½ */
+	io_out8(PIC1_ICW3, 2     ); /* PIC1ï¿½ï¿½IRQ2ï¿½É‚ÄÚ‘ï¿½ */
+	io_out8(PIC1_ICW4, 0x01  ); /* ï¿½mï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½ï¿½ï¿½[ï¿½h */
 
-	io_out8(PIC0_IMR,  0xfb  ); /* 11111011 PIC1ˆÈŠO‚Í‘S‚Ä‹ÖŽ~ */
-	io_out8(PIC1_IMR,  0xff  ); /* 11111111 ‘S‚Ä‚ÌŠ„‚èž‚Ý‚ðŽó‚¯•t‚¯‚È‚¢ */
+	io_out8(PIC0_IMR,  0xfb  ); /* 11111011 PIC1ï¿½ÈŠOï¿½Í‘Sï¿½Ä‹ÖŽ~ */
+	io_out8(PIC1_IMR,  0xff  ); /* 11111111 ï¿½Sï¿½Ä‚ÌŠï¿½ï¿½èžï¿½Ý‚ï¿½ï¿½ó‚¯•tï¿½ï¿½ï¿½È‚ï¿½ */
 
-	return;
-}
-
-#define PORT_KEYDAT		0x0060
-
-struct FIFO8 keyfifo;
-
-void inthandler21(int *esp)
-{
-	unsigned char data;
-	io_out8(PIC0_OCW2, 0x61);	/* IRQ-01Žó•tŠ®—¹‚ðPIC‚É’Ê’m */
-	data = io_in8(PORT_KEYDAT);
-	fifo8_put(&keyfifo, data);
-	return;
-}
-
-struct FIFO8 mousefifo;
-
-void inthandler2c(int *esp)
-/* PS/2ƒ}ƒEƒX‚©‚ç‚ÌŠ„‚èž‚Ý */
-{
-	unsigned char data;
-	io_out8(PIC1_OCW2, 0x64);	/* IRQ-12Žó•tŠ®—¹‚ðPIC1‚É’Ê’m */
-	io_out8(PIC0_OCW2, 0x62);	/* IRQ-02Žó•tŠ®—¹‚ðPIC0‚É’Ê’m */
-	data = io_in8(PORT_KEYDAT);
-	fifo8_put(&mousefifo, data);
 	return;
 }
 
 void inthandler27(int *esp)
-/* PIC0‚©‚ç‚Ì•sŠ®‘SŠ„‚èž‚Ý‘Îô */
-/* Athlon64X2‹@‚È‚Ç‚Å‚Íƒ`ƒbƒvƒZƒbƒg‚Ì“s‡‚É‚æ‚èPIC‚Ì‰Šú‰»Žž‚É‚±‚ÌŠ„‚èž‚Ý‚ª1“x‚¾‚¯‚¨‚±‚é */
-/* ‚±‚ÌŠ„‚èž‚Ýˆ—ŠÖ”‚ÍA‚»‚ÌŠ„‚èž‚Ý‚É‘Î‚µ‚Ä‰½‚à‚µ‚È‚¢‚Å‚â‚è‰ß‚²‚· */
-/* ‚È‚º‰½‚à‚µ‚È‚­‚Ä‚¢‚¢‚ÌH
-	¨  ‚±‚ÌŠ„‚èž‚Ý‚ÍPIC‰Šú‰»Žž‚Ì“d‹C“I‚ÈƒmƒCƒY‚É‚æ‚Á‚Ä”­¶‚µ‚½‚à‚Ì‚È‚Ì‚ÅA
-		‚Ü‚¶‚ß‚É‰½‚©ˆ—‚µ‚Ä‚â‚é•K—v‚ª‚È‚¢B									*/
+/* PIC0ï¿½ï¿½ï¿½ï¿½Ì•sï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½èžï¿½Ý‘Îï¿½ */
+/* Athlon64X2ï¿½@ï¿½È‚Ç‚Å‚Íƒ`ï¿½bï¿½vï¿½Zï¿½bï¿½gï¿½Ì“sï¿½ï¿½ï¿½É‚ï¿½ï¿½PICï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ÌŠï¿½ï¿½èžï¿½Ý‚ï¿½1ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+/* ï¿½ï¿½ï¿½ÌŠï¿½ï¿½èžï¿½Ýï¿½ï¿½ï¿½ï¿½Öï¿½ï¿½ÍAï¿½ï¿½ï¿½ÌŠï¿½ï¿½èžï¿½Ý‚É‘Î‚ï¿½ï¿½Ä‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Å‚ï¿½ï¿½ß‚ï¿½ï¿½ï¿½ */
+/* ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ÌH
+	ï¿½ï¿½  ï¿½ï¿½ï¿½ÌŠï¿½ï¿½èžï¿½Ý‚ï¿½PICï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì“dï¿½Cï¿½Iï¿½Èƒmï¿½Cï¿½Yï¿½É‚ï¿½ï¿½ï¿½Ä”ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚È‚Ì‚ÅA
+		ï¿½Ü‚ï¿½ï¿½ß‚É‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½È‚ï¿½ï¿½B									*/
 {
-	io_out8(PIC0_OCW2, 0x67); /* IRQ-07Žó•tŠ®—¹‚ðPIC‚É’Ê’m */
+	io_out8(PIC0_OCW2, 0x67); /* IRQ-07ï¿½ï¿½tï¿½ï¿½ï¿½ï¿½ï¿½ï¿½PICï¿½É’Ê’m */
 	return;
 }
