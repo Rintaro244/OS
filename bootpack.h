@@ -163,7 +163,7 @@ void sheet_free(struct SHEET *sht);
 /* timer.c */
 #define MAX_TIMER		500
 struct TIMER {
-	struct TIMER *next;
+	struct TIMER *next_timer;
 	unsigned int timeout, flags;
 	struct FIFO32 *fifo;
 	int data;

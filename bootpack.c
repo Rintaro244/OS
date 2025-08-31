@@ -1,4 +1,4 @@
-/* bootpack‚ÌƒƒCƒ“ */
+/* bootpackã®ãƒ¡ã‚¤ãƒ³ */
 
 #include "bootpack.h"
 #include <stdio.h>
