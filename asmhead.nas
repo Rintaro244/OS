@@ -80,7 +80,7 @@ scrn320:
 		MOV		BYTE [VMODE],8	; 画面モードをメモする（C言語が参照する）
 		MOV		WORD [SCRNX],320
 		MOV		WORD [SCRNY],200
-		MOV		DWORD [VRAM],0x000a0000
+		MOV		DWORD [VRAM],0x000a0000 ; 画面モードの修正
 
 ; キーボードのLED状態をBIOSに教えてもらう
 
