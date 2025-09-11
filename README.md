@@ -7,7 +7,7 @@
 3. OSディレクトリにあるバッチファイル!cons_9x.bat !cons_nt.bat のどちらかを開く．
 4. 開かれたコマンドプロンプトでmake runと入力し実行する．
 5. 無事実行されたらOK．
-[実行例](./screenshot_README.png)
+[実行例](./OS/screenshot_README.png)
 
 # Features
 ## Chapter3
