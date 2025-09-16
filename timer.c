@@ -24,7 +24,7 @@ void init_pit(void)
 	t = timer_alloc(); /* 一つもらってくる */
 	t->timeout = 0xffffffff;
 	t->flags = TIMER_FLAGS_USING;
-	t->next_timer = 0; /* 一番うしろ */
+	t->next = 0; /* 一番うしろ */
 	timerctl.t0 = t; /* 今は番兵しかいないので先頭でもある */
 	timerctl.next = 0xffffffff; /* 番兵しかいないので番兵の時刻 */
 	return;
@@ -67,7 +67,7 @@ void timer_settime(struct TIMER *timer, unsigned int timeout)
 	if (timer->timeout <= t->timeout) {
 		/* 先頭に入れる場合 */
 		timerctl.t0 = timer;
-		timer->next_timer = t; /* 次はt */
+		timer->next = t; /* 次はt */
 		timerctl.next = timer->timeout;
 		io_store_eflags(e);
 		return;
@@ -75,11 +75,11 @@ void timer_settime(struct TIMER *timer, unsigned int timeout)
 	/* どこに入れればいいかを探す */
 	for (;;) {
 		s = t;
-		t = t->next_timer;
+		t = t->next;
 		if (timer->timeout <= t->timeout) {
 			/* sとtの間に入れる場合 */
-			s->next_timer = timer; /* sの次はtimer */
-			timer->next_timer = t; /* timerの次はt */
+			s->next = timer; /* sの次はtimer */
+			timer->next = t; /* timerの次はt */
 			io_store_eflags(e);
 			return;
 		}
@@ -89,6 +89,7 @@ void timer_settime(struct TIMER *timer, unsigned int timeout)
 void inthandler20(int *esp)
 {
 	struct TIMER *timer;
+	char ts = 0;
 	io_out8(PIC0_OCW2, 0x60);	/* IRQ-00受付完了をPICに通知 */
 	timerctl.count++;
 	if (timerctl.next > timerctl.count) {
@@ -102,10 +103,17 @@ void inthandler20(int *esp)
 		}
 		/* タイムアウト */
 		timer->flags = TIMER_FLAGS_ALLOC;
-		fifo32_put(timer->fifo, timer->data);
-		timer = timer->next_timer; /* 次のタイマの番地をtimerに代入 */
+		if (timer != task_timer) {
+			fifo32_put(timer->fifo, timer->data);
+		} else {
+			ts = 1; /* task_timerがタイムアウトした */
+		}
+		timer = timer->next; /* 次のタイマの番地をtimerに代入 */
 	}
 	timerctl.t0 = timer;
 	timerctl.next = timer->timeout;
+	if (ts != 0) {
+		task_switch();
+	}
 	return;
 }

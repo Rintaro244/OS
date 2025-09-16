@@ -1,10 +1,10 @@
 ; naskfunc
 ; TAB=4
 
-[FORMAT "WCOFF"]				; ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œã‚‹ãƒ¢ãƒ¼ãƒ‰	
-[INSTRSET "i486p"]				; 486ã®å‘½ä»¤ã¾ã§ä½¿ã„ãŸã„ã¨ã„ã†è¨˜è¿°
-[BITS 32]						; 32ãƒ“ãƒƒãƒˆãƒ¢ãƒ¼ãƒ‰ç”¨ã®æ©Ÿæ¢°èªã‚’ä½œã‚‰ã›ã‚‹
-[FILE "naskfunc.nas"]			; ã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«åæƒ…å ±
+[FORMAT "WCOFF"]				; ƒIƒuƒWƒFƒNƒgƒtƒ@ƒCƒ‹‚ğì‚éƒ‚[ƒh	
+[INSTRSET "i486p"]				; 486‚Ì–½—ß‚Ü‚Åg‚¢‚½‚¢‚Æ‚¢‚¤‹Lq
+[BITS 32]						; 32ƒrƒbƒgƒ‚[ƒh—p‚Ì‹@ŠBŒê‚ğì‚ç‚¹‚é
+[FILE "naskfunc.nas"]			; ƒ\[ƒXƒtƒ@ƒCƒ‹–¼î•ñ
 
 		GLOBAL	_io_hlt, _io_cli, _io_sti, _io_stihlt
 		GLOBAL	_io_in8,  _io_in16,  _io_in32
@@ -12,9 +12,11 @@
 		GLOBAL	_io_load_eflags, _io_store_eflags
 		GLOBAL	_load_gdtr, _load_idtr
 		GLOBAL	_load_cr0, _store_cr0
+		GLOBAL	_load_tr
 		GLOBAL	_asm_inthandler20, _asm_inthandler21
 		GLOBAL	_asm_inthandler27, _asm_inthandler2c
 		GLOBAL	_memtest_sub
+		GLOBAL	_farjmp
 		EXTERN	_inthandler20, _inthandler21
 		EXTERN	_inthandler27, _inthandler2c
 
@@ -73,14 +75,14 @@ _io_out32:	; void io_out32(int port, int data);
 		RET
 
 _io_load_eflags:	; int io_load_eflags(void);
-		PUSHFD		; PUSH EFLAGS ã¨ï¿½?ï¿½?æ„å‘³
+		PUSHFD		; PUSH EFLAGS ‚Æ‚¢‚¤ˆÓ–¡
 		POP		EAX
 		RET
 
 _io_store_eflags:	; void io_store_eflags(int eflags);
 		MOV		EAX,[ESP+4]
 		PUSH	EAX
-		POPFD		; POP EFLAGS ã¨ï¿½?ï¿½?æ„å‘³
+		POPFD		; POP EFLAGS ‚Æ‚¢‚¤ˆÓ–¡
 		RET
 
 _load_gdtr:		; void load_gdtr(int limit, int addr);
@@ -102,6 +104,10 @@ _load_cr0:		; int load_cr0(void);
 _store_cr0:		; void store_cr0(int cr0);
 		MOV		EAX,[ESP+4]
 		MOV		CR0,EAX
+		RET
+
+_load_tr:		; void load_tr(int tr);
+		LTR		[ESP+4]			; tr
 		RET
 
 _asm_inthandler20:
@@ -169,7 +175,7 @@ _asm_inthandler2c:
 		IRETD
 
 _memtest_sub:	; unsigned int memtest_sub(unsigned int start, unsigned int end)
-		PUSH	EDI						; ï¼ˆEBX, ESI, EDI ã‚‚ä½¿ã„ãŸã„ã®ã§ï¼‰
+		PUSH	EDI						; iEBX, ESI, EDI ‚àg‚¢‚½‚¢‚Ì‚Åj
 		PUSH	ESI
 		PUSH	EBX
 		MOV		ESI,0xaa55aa55			; pat0 = 0xaa55aa55;
@@ -199,4 +205,8 @@ mts_fin:
 		POP		EBX
 		POP		ESI
 		POP		EDI
+		RET
+
+_farjmp:		; void farjmp(int eip, int cs);
+		JMP		FAR	[ESP+4]				; eip, cs
 		RET
